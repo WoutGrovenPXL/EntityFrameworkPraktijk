@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using School.Web.Infrastructure;
+using School.Web.Models;
 
 namespace School.Web
 {
@@ -9,10 +11,20 @@ namespace School.Web
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddScoped<IEnrollmentRepository, EnrollmentDbRepository>();
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddDbContext<SchoolDbContext>(options =>
+            {
+                options.UseSqlServer(
+                    builder.Configuration["ConnectionStrings:DefaultConnection"]);
+            });
+
+            
             var app = builder.Build();
 
+
+           
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {

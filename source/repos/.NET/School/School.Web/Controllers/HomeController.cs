@@ -8,16 +8,19 @@ namespace School.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IEnrollmentRepository _enrollmentRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IEnrollmentRepository enrollmentRepository)
         {
             _logger = logger;
+            _enrollmentRepository = enrollmentRepository;
         }
 
         public IActionResult Index()
         {
             //TODO: set the view model to be a list of enrollments with student and course
-            return View();
+            IEnumerable<Enrollment> enrollments = _enrollmentRepository.GetAllGradedEnrollmentsWithStudentAndCourse();
+            return View(enrollments);
         }
 
         public IActionResult Privacy()

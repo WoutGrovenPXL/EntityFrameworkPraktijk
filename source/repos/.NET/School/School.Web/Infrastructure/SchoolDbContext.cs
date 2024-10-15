@@ -1,10 +1,36 @@
 using School.Web.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace School.Web.Infrastructure;
 
-public class SchoolDbContext
+public class SchoolDbContext : DbContext
 {
     //You can use the private methods below to seed the database with dummy data
+ 
+    public DbSet<Course> Courses { get; set; }
+    public DbSet<Student> Students { get; set; }
+    public DbSet<Enrollment> Enrollments { get; set; }
+
+    public SchoolDbContext(DbContextOptions<SchoolDbContext> options) : base(options)
+    {
+        
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+
+        var courses = GetCourses();
+        var students = GetDummyStudents();
+        var enrollments = GetDummyEnrollments(students, courses);
+
+
+
+        modelBuilder.Entity<Course>().HasData(courses);
+        modelBuilder.Entity<Student>().HasData(students);
+        modelBuilder.Entity<Enrollment>().HasData(enrollments);
+    }
+
+
     private IList<Course> GetCourses()
     {
         return new List<Course>
@@ -14,7 +40,7 @@ public class SchoolDbContext
             new Course { Id = Guid.NewGuid(), Title = "Literature", Credits = 4 }
         };
     }
-
+    
     private IList<Student> GetDummyStudents()
     {
         return new List<Student>
