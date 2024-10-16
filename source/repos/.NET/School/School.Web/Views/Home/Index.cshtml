@@ -9,7 +9,7 @@
     <ul style="list-style-type: none" class="list-group">
         @foreach(var enrollment in @Model)
         {
-            <li>@enrollment.Student.FirstName @enrollment.Student.LastName - @enrollment.Course.Title (@enrollment.Grade)</li>
+            <li style="border: solid">@enrollment.Student.FirstName @enrollment.Student.LastName - @enrollment.Course.Title (@enrollment.Grade)</li>
         }
     </ul>
 </div>
